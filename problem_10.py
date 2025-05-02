@@ -7,12 +7,10 @@ def first_non_repeating(text):
         else:
             count[i] = count[i] + 1
 
-    num = None
     for x in text:
         if count[x] == 1:
-            num = x
-            break
-    return num
+            return x
+    return None
         
 # Test cases
 print("--- Problem 10: First Non-Repeating Character ---")

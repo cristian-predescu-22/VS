@@ -6,15 +6,6 @@ autoinstall:
   keyboard:
     layout: gb
 
-  network:
-    version: 2
-    wifis:
-      wlan0:
-        access-points:
-          "VM1666944":
-            password: "YOUR_WIFI_PASSWORD_HERE"
-        dhcp4: true
-
   identity:
     hostname: jelly-Ideapad
     username: jelly

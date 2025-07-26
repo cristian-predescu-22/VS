@@ -9,19 +9,16 @@ autoinstall:
   identity:
     hostname: jelly-Ideapad
     username: jelly
-    password: "$6$rounds=4096$y5L3HnSZZuWf7XfJ$RHZ3U4lYg85XnCv6U7k6q0sBvL/8s4FZ5ChAS2kVjYeU/7r7Eo7oFwW1MGnQQ3r5cL2Hvm3QZ6Xus2M8o4CBJ/"
-    # password is "1212"
+    password: "1212"
 
   timezone: Europe/London
 
-  # ✅ Wipes the whole disk for a clean install
   storage:
     layout:
-      name: direct
+      name: direct   # Wipes the entire disk automatically
 
-  # ✅ Equivalent of "Install third-party software for graphics and Wi-Fi"
   drivers:
-    install: true
+    install: true    # Installs third-party drivers (graphics, Wi-Fi, etc.)
 
   packages:
     - python3
@@ -42,11 +39,8 @@ autoinstall:
     # ✅ Update & upgrade
     - curtin in-target --target=/target -- bash -c "apt update && apt upgrade -y"
 
-    # ✅ Configure Git
-    - curtin in-target --target=/target -- git config --global user.name 'Cristian Predescu'
-    - curtin in-target --target=/target -- git config --global user.email 'cristipredescu21@yahoo.com'
-    - curtin in-target --target=/target -- git config --global init.defaultBranch main
-    - curtin in-target --target=/target -- git config --global credential.helper store
+    # ✅ Write Git config directly (avoids $HOME errors)
+    - curtin in-target --target=/target -- bash -c "echo '[user]\n    name = Cristian Predescu\n    email = cristipredescu21@yahoo.com\n[init]\n    defaultBranch = main\n[credential]\n    helper = store' > /home/jelly/.gitconfig && chown jelly:jelly /home/jelly/.gitconfig"
 
     # ✅ Download VS Code, Discord, Steam into Downloads
     - curtin in-target --target=/target -- bash -c "mkdir -p /home/jelly/Downloads && cd /home/jelly/Downloads && wget -O code.deb https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64 && wget -O discord.deb https://stable.dl2.discordapp.net/apps/linux/0.0.102/discord-0.0.102.deb && wget -O steam.deb https://cdn.fastly.steamstatic.com/client/installer/steam.deb && chown jelly:jelly /home/jelly/Downloads/*"

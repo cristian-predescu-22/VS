@@ -1,0 +1,76 @@
+#cloud-config
+autoinstall:
+  version: 1
+
+  locale: en_GB
+  keyboard:
+    layout: gb
+
+  network:
+    version: 2
+    wifis:
+      wlan0:
+        access-points:
+          "VM1666944":
+            password: "YOUR_WIFI_PASSWORD_HERE"
+        dhcp4: true
+
+  identity:
+    hostname: jelly-Ideapad
+    username: jelly
+    password: "$6$rounds=4096$y5L3HnSZZuWf7XfJ$RHZ3U4lYg85XnCv6U7k6q0sBvL/8s4FZ5ChAS2kVjYeU/7r7Eo7oFwW1MGnQQ3r5cL2Hvm3QZ6Xus2M8o4CBJ/"
+    # password is "1212"
+
+  timezone: Europe/London
+
+  # ✅ Wipes the whole disk for a clean install
+  storage:
+    layout:
+      name: direct
+
+  # ✅ Equivalent of "Install third-party software for graphics and Wi-Fi"
+  drivers:
+    install: true
+
+  packages:
+    - python3
+    - python3-pip
+    - python3-venv
+    - git
+    - curl
+    - wget
+    - neofetch
+
+  apt:
+    preserve_sources_list: false
+    primary:
+      - arches: [amd64]
+        uri: http://archive.ubuntu.com/ubuntu
+
+  late-commands:
+    # ✅ Update & upgrade
+    - curtin in-target --target=/target -- bash -c "apt update && apt upgrade -y"
+
+    # ✅ Configure Git
+    - curtin in-target --target=/target -- git config --global user.name 'Cristian Predescu'
+    - curtin in-target --target=/target -- git config --global user.email 'cristipredescu21@yahoo.com'
+    - curtin in-target --target=/target -- git config --global init.defaultBranch main
+    - curtin in-target --target=/target -- git config --global credential.helper store
+
+    # ✅ Download VS Code, Discord, Steam into Downloads
+    - curtin in-target --target=/target -- bash -c "mkdir -p /home/jelly/Downloads && cd /home/jelly/Downloads && wget -O code.deb https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64 && wget -O discord.deb https://stable.dl2.discordapp.net/apps/linux/0.0.102/discord-0.0.102.deb && wget -O steam.deb https://cdn.fastly.steamstatic.com/client/installer/steam.deb && chown jelly:jelly /home/jelly/Downloads/*"
+
+    # ✅ Install the .deb files
+    - curtin in-target --target=/target -- bash -c "apt install -y /home/jelly/Downloads/code.deb /home/jelly/Downloads/discord.deb /home/jelly/Downloads/steam.deb"
+
+    # ✅ Download wallpaper to Documents
+    - curtin in-target --target=/target -- bash -c "mkdir -p /home/jelly/Documents && wget -O /home/jelly/Documents/NoGameNoLife.png https://github.com/cristian-predescu-22/VS/blob/main/NoGameNoLife.png?raw=true && chown jelly:jelly /home/jelly/Documents/NoGameNoLife.png"
+
+    # ✅ Create ChatGPT shortcut + icon
+    - curtin in-target --target=/target -- bash -c "mkdir -p /home/jelly/.local/share/applications /home/jelly/.local/share/icons"
+    - curtin in-target --target=/target -- bash -c "wget -O /home/jelly/.local/share/icons/chatgpt.png https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg && chown jelly:jelly /home/jelly/.local/share/icons/chatgpt.png"
+    - curtin in-target --target=/target -- bash -c \"echo '[Desktop Entry]\nName=ChatGPT\nComment=Open ChatGPT in your browser\nExec=firefox https://chat.openai.com/\nIcon=/home/jelly/.local/share/icons/chatgpt.png\nTerminal=false\nType=Application\nCategories=Utility;AI;\nStartupNotify=true' > /home/jelly/.local/share/applications/chatgpt.desktop && chown jelly:jelly /home/jelly/.local/share/applications/chatgpt.desktop"
+
+    # ✅ Configure Neofetch
+    - curtin in-target --target=/target -- bash -c "mkdir -p /home/jelly/.config/neofetch && chown jelly:jelly /home/jelly/.config/neofetch"
+    - curtin in-target --target=/target -- bash -c \"echo 'print_info() {\n    info title\n    info underline\n    info \"OS\" distro\n    info \"Kernel\" kernel\n    info \"Uptime\" uptime\n    info \"Resolution\" resolution\n    info \"DE\" de\n    info \"WM\" wm\n    info \"CPU\" cpu\n    info \"GPU\" gpu\n    info \"Memory\" memory\n    info \"Battery\" battery\n    info \"Shell\" shell\n    info \"Theme\" theme\n    info \"Terminal\" term\n    info cols\n}' > /home/jelly/.config/neofetch/config.conf && chown jelly:jelly /home/jelly/.config/neofetch/config.conf"

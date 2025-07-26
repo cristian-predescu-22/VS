@@ -1,0 +1,127 @@
+First in the installer:
+
+Choose language - English
+Accessibility - N/A (next)
+Keyboard - English UK
+Connect to Wifi - Name: VM1666944 - Pass: 123 (temp password will change it later)
+I clicked next and it asked me to "Update installer" i clicked it
+Now i pressed "Close installer"
+Now i opened the "Install Ubuntu 24.04.2 LTS and it brought me back to the begining of the setup.
+English - no accesability - English UK - Connect to wifi.
+
+Now next "interactive installation" (for now i want the autoinstall.ymal)
+
+Default Selection - Just the essentails, web browswer and basic utilities
+
+Recomended propriatery software - (only the first one) Install third party software for graphics and wifi hardware
+
+Erase disk and install ubuntu
+
+Account:
+jelly
+jelly-Ideapad
+jelly
+require password to login
+
+Next zone London (England, United kingdom) - Europe/London
+
+Done now installing
+
+
+
+
+After boot:
+
+I skipped the Ubuntu Pro
+
+No don't system system data
+
+I opened terminal and ran:
+sudo apt update && sudo apt-get upgrade -y
+
+sudo apt install python3 python3-pip python3-venv
+
+sudo apt install git
+git config --global user.name "Cristian Predescu"
+git config --global user.email "cristipredescu21@yahoo.com"
+git config --global init.defaultBranch main
+git config --global credential.helper store
+
+cd home/{user}/Documents/
+wget https://github.com/cristian-predescu-22/VS/blob/main/NoGameNoLife.png?raw=true
+mv NoGameNoLife.png\?raw\=true NoGameNoLife.png
+
+downlaoded Vscode and discord form web:
+https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
+https://stable.dl2.discordapp.net/apps/linux/0.0.102/discord-0.0.102.deb
+https://cdn.fastly.steamstatic.com/client/installer/steam.deb
+
+went to downloads cd home/{user}/Downloads/
+sudo apt install ./code.....
+sudo apt install ./discord....
+sudo apt install ./steam....
+
+Then i have a small script Chatgpt shortcut app:
+
+nano ~/.local/share/applications/chatgpt.desktop
+
+Add this to the file:
+[Desktop Entry]
+Name=ChatGPT
+Comment=Open ChatGPT in your browser
+Exec=firefox https://chat.openai.com/
+Icon=chatgpt
+Terminal=false
+Type=Application
+Categories=Utility;AI;
+StartupNotify=true
+
+Then run this:
+mkdir -p ~/.local/share/icons
+wget -O ~/.local/share/icons/chatgpt.png https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg
+Icon=/home/yourusername/.local/share/icons/chatgpt.png
+update-desktop-database ~/.local/share/applications/
+
+
+
+Then i installed - sudo apt install neofetch - but maade a bit of a change to it's config file.
+mkdir -p ~/.config/neofetch
+inside the config.conf i only want to edit everything from the print_info function:
+here are my chnages:
+
+# See this wiki page for more info:
+# https://github.com/dylanaraps/neofetch/wiki/Customizing-Info
+print_info() {
+    info title
+    info underline
+
+    info "OS" distro
+    info "Kernel" kernel
+    info "Uptime" uptime
+    info "Resolution" resolution
+    info "DE" de
+    info "WM" wm
+    info "CPU" cpu
+    info "GPU" gpu
+    info "Memory" memory
+    info "Battery" battery
+
+    info "Shell" shell
+    info "Theme" theme
+    info "Terminal" term
+
+    # info "GPU Driver" gpu_driver  # Linux/macOS only
+    # info "CPU Usage" cpu_usage
+    # info "Disk" disk
+    # info "Battery" battery
+    # info "Font" font
+    # info "Song" song
+    # [[ "$player" ]] && prin "Music Player" "$player"
+    # info "Local IP" local_ip
+    # info "Public IP" public_ip
+    # info "Users" users
+    # info "Locale" locale  # This only works on glibc systems.
+
+    info cols
+}
+
